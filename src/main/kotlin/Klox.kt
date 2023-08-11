@@ -25,14 +25,14 @@ class Klox {
         }
     }
 
-    fun runFile(path: String) {
+    private fun runFile(path: String) {
         val bytes = Files.readAllBytes(Paths.get(path))
         run(String(bytes, Charset.defaultCharset()))
 
         if (hadError) exitProcess(64)
     }
 
-    fun runPrompt() {
+    private fun runPrompt() {
 
         val input = InputStreamReader(System.`in`)
         val bufferedReader = BufferedReader(input)
@@ -46,7 +46,7 @@ class Klox {
 
     private fun run(source: String) {
         val scanner = Scanner(source)
-        val tokens = scanner.getTokens()
+        val tokens = scanner.scanTokens()
 
         for (token in tokens) {
             println(token)
@@ -54,12 +54,14 @@ class Klox {
     }
 
 
-    fun error(line: Int, message: String) {
-        report(line, "", message)
-    }
+    companion object {
+        fun error(line: Int, message: String) {
+            report(line, "", message)
+        }
 
-    private fun report(line: Int, where: String, message: String) {
-        println("[line $line] Error $where: $message")
+        private fun report(line: Int, where: String, message: String) {
+            println("[line $line] Error $where: $message")
+        }
     }
 
 }
