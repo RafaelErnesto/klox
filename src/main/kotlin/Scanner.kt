@@ -58,7 +58,7 @@ class Scanner(private val source: String) {
             char == '\n' -> line++
             char == '"' -> processString()
             isDigit(char) -> processNumber()
-            else -> Klox.error(line, "Unexpected character")
+            else -> ErrorRegister.register(line, null, "Unexpected character")
         }
 
     }
@@ -98,7 +98,7 @@ class Scanner(private val source: String) {
         }
 
         if (isEnd()) {
-            Klox.error(line, "Unterminated string")
+            ErrorRegister.register(line,null, "Unterminated string")
         }
 
         advance()

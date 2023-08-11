@@ -6,7 +6,6 @@ import java.nio.file.Paths
 import kotlin.system.exitProcess
 
 class Klox {
-    private var hadError = false
 
     fun main(args: Array<String>) {
         when {
@@ -29,7 +28,7 @@ class Klox {
         val bytes = Files.readAllBytes(Paths.get(path))
         run(String(bytes, Charset.defaultCharset()))
 
-        if (hadError) exitProcess(64)
+        if (ErrorRegister.hadErrors()) exitProcess(64)
     }
 
     private fun runPrompt() {
@@ -48,20 +47,13 @@ class Klox {
         val scanner = Scanner(source)
         val tokens = scanner.scanTokens()
 
-        for (token in tokens) {
-            println(token)
+        if (!ErrorRegister.hadErrors()) {
+            for (token in tokens) {
+                println(token)
+            }
+        } else {
+            ErrorReporter.report(ErrorRegister.getErrors())
+            exitProcess(64)
         }
     }
-
-
-    companion object {
-        fun error(line: Int, message: String) {
-            report(line, "", message)
-        }
-
-        private fun report(line: Int, where: String, message: String) {
-            println("[line $line] Error $where: $message")
-        }
-    }
-
 }
