@@ -48,6 +48,7 @@ class Klox {
         val tokens = scanner.scanTokens()
 
         if (!ErrorRegister.hadErrors()) {
+            println("TOKENS")
             for (token in tokens) {
                 println(token)
             }
