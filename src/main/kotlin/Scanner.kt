@@ -47,7 +47,11 @@ class Scanner(private val source: String) {
                     while (peek() != '\n' && !isEnd()) {
                         advance()
                     }
-                } else {
+                } else if (match('*')) {
+                    while (peek() != '*' && peek(2) != '/' && !isEnd()){
+                        advance()
+                    }
+                } else{
                     addToken(TokenType.SLASH)
                 }
             }
